@@ -13,13 +13,13 @@ INSTALLER=$SCRIPT_DIR/debian-keenetic.tar.gz
 [ -d $ROOT_DIR ] && rm -fr $ROOT_DIR
 mkdir $ROOT_DIR
 
-# Adding toolchain libraries
+echo 'Adding toolchain libraries...'
 cp -r $BUILD_DIR/toolchain/ipkg-mipselsf/libc/opt $ROOT_DIR
 
-# Adding busybox
+echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
 
-# Adding Debian chroot
+echo 'Adding Debian minimal...'
 [ -f debian_clean.tgz ] || wget http://files.ryzhov-al.ru/Routers/chroot-debian/debian_clean.tgz
 sudo tar -xz -C $ROOT_DIR/opt -f debian_clean.tgz
 
@@ -29,14 +29,15 @@ sudo touch $ROOT_DIR/opt/debian/chroot-services.list
 sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list
 echo 'ssh' >> $ROOT_DIR/opt/debian/chroot-services.list
 
-# Adding start script
+echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc
 cp $SCRIPT_DIR/initrc $ROOT_DIR/opt/etc
 
+echo 'Adding ndmq utility...'
+sudo tar -xz -C $ROOT_DIR/opt/debian/usr/bin -f ndmq.tgz
 
-
-# Packing installer
-[ -f $INSTALLER ] && rm $INSTALLER
+echo 'Packing installer...'
+[ -f $INSTALLER ] && rm -f $INSTALLER
 
 # The lower compression gives -10 secs while unpacking on Omni II
 #sudo tar -czf $INSTALLER -C $ROOT_DIR/opt bin etc lib sbin debian
@@ -44,3 +45,5 @@ sudo tar -I 'gzip -1' -cf $INSTALLER -C $ROOT_DIR/opt  bin etc lib sbin debian
 
 # Removing temp folder
 sudo rm -fr $ROOT_DIR
+
+echo "Done! Plug in EXT2/3/4 formatted USB drive to Keenetic, put $INSTALLER into \"install\" folder via SAMBA or FTP and activate OPKG component via WebUI."

@@ -1,0 +1,85 @@
+#!/bin/sh
+PATH=/opt/bin:/opt/sbin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Debian folder
+CHROOT_DIR=/opt/debian
+
+# Some folder outside of sandbox, will be mounted to /mnt folder in Debian
+# Leave commented if not needed
+#EXT_DIR=/media
+
+CHROOT_SERVICES_LIST=$CHROOT_DIR/chroot-services.list
+if [ ! -e "$CHROOT_SERVICES_LIST" ]; then
+	echo "Please, define Debian services to start in $CHROOT_SERVICES_LIST first!"
+	echo 'One service per line. Hint: this is a script names from Debian /etc/init.d/'
+	exit 1
+fi
+
+MountedDirCount="$(mount | grep $CHROOT_DIR | wc -l)"
+
+start() {
+	if [ $MountedDirCount -gt 0 ]; then
+		logger 'Debian services seems to be already started, exiting...'
+		exit 1
+	fi
+	logger 'Starting Debian services...'
+	for dir in dev dev/pts proc sys; do
+		mount -o bind /$dir $CHROOT_DIR/$dir
+	done
+	[ -z "$EXT_DIR" ] || mount -o bind $EXT_DIR $CHROOT_DIR/media
+	for item in $(cat $CHROOT_SERVICES_LIST); do
+		PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/sbin \
+		LC_ALL=C \
+		LANGUAGE=C \
+		LANG=C \
+		chroot $CHROOT_DIR /etc/init.d/$item start
+	done
+}
+
+stop() {
+	if [ $MountedDirCount -eq 0 ]; then
+		logger 'Debian services seems to be already stopped, exiting...'
+		exit 1
+	fi
+	logger 'Stopping Debian services...'
+	for item in $(cat $CHROOT_SERVICES_LIST); do
+		PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/sbin \
+		LC_ALL=C \
+		LANGUAGE=C \
+		LANG=C \
+		chroot $CHROOT_DIR /etc/init.d/$item stop
+	done
+	umount $CHROOT_DIR/dev/pts
+	mount | grep $CHROOT_DIR | awk "{print \$3}" | xargs umount
+}
+
+status() {
+	if [ $MountedDirCount -gt 0 ]; then
+		echo 'Debian services is running'
+	else
+		echo 'Debian services is stopped'
+	fi
+}
+
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	restart)
+	stop
+		sleep 5
+		start
+	;;
+	status) status
+	;;
+	*)
+		echo "Usage: $0 (start|stop|restart|status)"
+		exit 1
+		;;
+esac
+
+echo 'Done.'
+exit 0

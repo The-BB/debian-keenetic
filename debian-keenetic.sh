@@ -11,7 +11,10 @@ INSTALLER=$SCRIPT_DIR/debian-keenetic.tar.gz
 [ -d $BUILD_DIR ] || exit 1
 
 [ -d $ROOT_DIR ] && rm -fr $ROOT_DIR
-mkdir $ROOT_DIR
+# Make hook scripts dirs, see https://github.com/ndmsystems/packages/wiki/Opkg-Component
+for dir in wan user netfilter usb fs time button; do
+    mkdir -p $ROOT_DIR/opt/etc/ndm/${dir}.d
+done
 
 echo 'Adding toolchain libraries...'
 cp -r $BUILD_DIR/toolchain/ipkg-mipselsf/libc/opt $ROOT_DIR
@@ -34,7 +37,7 @@ mkdir -p $ROOT_DIR/opt/etc
 cp $SCRIPT_DIR/initrc $ROOT_DIR/opt/etc
 
 echo 'Adding ndmq utility...'
-sudo tar -xz -C $ROOT_DIR/opt/debian/usr/bin -f ndmq.tgz
+sudo tar -xz -C $ROOT_DIR/opt/debian -f ndmq.tgz
 
 echo 'Packing installer...'
 [ -f $INSTALLER ] && rm -f $INSTALLER

@@ -22,6 +22,9 @@ cp -r $BUILD_DIR/toolchain/ipkg-mipselsf/libc/opt $ROOT_DIR
 echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
 
+echo 'Adding iptables...'
+cp -r $SCRIPT_DIR/../Entware-ng/build_dir/target-mipsel_mips32r2_uClibc-*/linux-mipselsf/iptables-*/ipkg-mipselsf/iptables/opt $ROOT_DIR
+
 echo 'Adding Debian minimal...'
 [ -f debian_clean.tgz ] || wget http://files.ryzhov-al.ru/Routers/chroot-debian/debian_clean.tgz
 sudo tar -xz -C $ROOT_DIR/opt -f debian_clean.tgz
@@ -31,6 +34,7 @@ sudo sed -i 's|Port 65022|Port 22|g' $ROOT_DIR/opt/debian/etc/ssh/sshd_config
 sudo touch $ROOT_DIR/opt/debian/chroot-services.list
 sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list
 echo 'ssh' >> $ROOT_DIR/opt/debian/chroot-services.list
+sudo mkdir $ROOT_DIR/opt/debian/opt/etc
 
 echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc

@@ -18,6 +18,8 @@ done
 
 echo 'Adding toolchain libraries...'
 cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3x/libc/opt $ROOT_DIR
+cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3x/libgcc/opt $ROOT_DIR
+cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3x/libpthread/opt $ROOT_DIR
 
 echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
@@ -37,6 +39,26 @@ sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list
 echo 'ssh' >> $ROOT_DIR/opt/debian/chroot-services.list
 sudo mkdir $ROOT_DIR/opt/debian/opt/etc
 
+# Set SourcesList, hostname & resolv.conf
+sudo cat > $ROOT_DIR/opt/debian/etc/apt/sources.list <<EOF
+deb http://ftp.ru.debian.org/debian/ jessie main non-free contrib
+#deb-src http://ftp.ru.debian.org/debian/ jessie main non-free contrib
+
+#deb http://security.debian.org/ jessie/updates main contrib non-free
+#deb-src http://security.debian.org/ jessie/updates main contrib non-free
+
+# jessie-updates, previously known as 'volatile'
+#deb http://ftp.ru.debian.org/debian/ jessie-updates main contrib non-free
+#deb-src http://ftp.ru.debian.org/debian/ jessie-updates main contrib non-free
+
+# jessie-backports, previously on backports.debian.org
+#deb http://ftp.ru.debian.org/debian/ jessie-backports main contrib non-free
+#deb-src http://ftp.ru.debian.org/debian/ jessie-backports main contrib non-free
+EOF
+
+sudo echo 'debian_mipsel' > $ROOT_DIR/opt/debian/etc/hostname
+sudo echo 'nameserver 127.0.0.1' > $ROOT_DIR/opt/debian/etc/resolv.conf
+
 echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc
 cp $SCRIPT_DIR/initrc $ROOT_DIR/opt/etc
@@ -49,7 +71,7 @@ echo 'Packing installer...'
 
 # The lower compression gives -10 secs while unpacking on Omni II
 #sudo tar -czf $INSTALLER -C $ROOT_DIR/opt bin etc lib sbin debian
-sudo tar -I 'gzip -1' -cf $INSTALLER -C $ROOT_DIR/opt  bin etc lib sbin debian
+sudo tar -I 'gzip -1' -cf $INSTALLER -C $ROOT_DIR/opt bin etc lib sbin debian
 
 # Removing temp folder
 sudo rm -fr $ROOT_DIR

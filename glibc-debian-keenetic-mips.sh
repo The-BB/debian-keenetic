@@ -4,7 +4,7 @@
 SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
-BUILD_DIR=$SCRIPT_DIR/../Entware-ng-3x/build_dir/target-mips_mips32r2_glibc-*
+BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-mips_mips32r2_glibc-*
 INSTALLER=$SCRIPT_DIR/debian-keenetic-mips.tar.gz
 
 # Compile libc and busybox from Entware-ng-3x first!
@@ -17,15 +17,15 @@ for dir in button fs netfilter schedule time usb user wan; do
 done
 
 echo 'Adding toolchain libraries...'
-cp -r $BUILD_DIR/toolchain/ipkg-mips-3x/libc/opt $ROOT_DIR
-cp -r $BUILD_DIR/toolchain/ipkg-mips-3x/libgcc/opt $ROOT_DIR
-cp -r $BUILD_DIR/toolchain/ipkg-mips-3x/libpthread/opt $ROOT_DIR
+cp -r $BUILD_DIR/toolchain/ipkg-mips-3.4/libc/opt $ROOT_DIR
+cp -r $BUILD_DIR/toolchain/ipkg-mips-3.4/libgcc/opt $ROOT_DIR
+cp -r $BUILD_DIR/toolchain/ipkg-mips-3.4/libpthread/opt $ROOT_DIR
 
 echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
-cp -r $SCRIPT_DIR/../Entware-ng-3x/build_dir/target-mips_mips32r2_glibc-*/linux-mips-3x/iptables-*/ipkg-mips-3x/iptables/opt $ROOT_DIR
+cp -r $SCRIPT_DIR/../Entware/build_dir/target-mips_mips32r2_glibc-*/linux-mips-3.4/iptables-*/ipkg-mips-3.4/iptables/opt $ROOT_DIR
 
 echo 'Adding Debian minimal...'
 [ -f debian_mips_clean.tgz ] || wget http://ndm.zyxmon.org/binaries/debian/debian_mips_clean.tgz

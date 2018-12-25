@@ -41,23 +41,12 @@ sudo mkdir $ROOT_DIR/opt/debian/opt/etc
 
 # Set SourcesList, hostname & resolv.conf
 sudo cat > $ROOT_DIR/opt/debian/etc/apt/sources.list <<EOF
-deb http://ftp.ru.debian.org/debian/ jessie main non-free contrib
-#deb-src http://ftp.ru.debian.org/debian/ jessie main non-free contrib
-
-#deb http://security.debian.org/ jessie/updates main contrib non-free
-#deb-src http://security.debian.org/ jessie/updates main contrib non-free
-
-# jessie-updates, previously known as 'volatile'
-#deb http://ftp.ru.debian.org/debian/ jessie-updates main contrib non-free
-#deb-src http://ftp.ru.debian.org/debian/ jessie-updates main contrib non-free
-
-# jessie-backports, previously on backports.debian.org
-#deb http://ftp.ru.debian.org/debian/ jessie-backports main contrib non-free
-#deb-src http://ftp.ru.debian.org/debian/ jessie-backports main contrib non-free
+deb http://ftp.debian.org/debian/ jessie main non-free contrib
+#deb-src http://ftp.debian.org/debian/ jessie main non-free contrib
 EOF
 
 sudo echo 'debian_mips' > $ROOT_DIR/opt/debian/etc/hostname
-sudo echo 'nameserver 127.0.0.1' > $ROOT_DIR/opt/debian/etc/resolv.conf
+sudo echo 'nameserver 8.8.8.8' > $ROOT_DIR/opt/debian/etc/resolv.conf
 
 echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc

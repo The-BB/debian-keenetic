@@ -1,4 +1,2 @@
-debian_mips_clean.tgz
-debian_mipsel_clean.tgz
-debian-keenetic-mips.tar.gz
-debian-keenetic-mipsel.tar.gz
+debian*.tgz
+debian*.tar.gz

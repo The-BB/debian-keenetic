@@ -33,7 +33,8 @@ echo 'Adding Debian minimal...'
 sudo tar -xz -C $ROOT_DIR/opt -f debian-stretch-mips_clean.tgz
 
 # Set up Debian chroot
-sudo sed -i 's|Port 65022|Port 222|g' $ROOT_DIR/opt/debian/etc/ssh/sshd_config
+sudo sed -i -e 's|Port 65022|Port 222|g' -e 's|#PermitRootLogin prohibit-password|PermitRootLogin yes|' \
+	$ROOT_DIR/opt/debian/etc/ssh/sshd_config
 sudo touch $ROOT_DIR/opt/debian/chroot-services.list
 sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list
 echo 'ssh' >> $ROOT_DIR/opt/debian/chroot-services.list

@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
 BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-mipsel_mips32r2_glibc-*
-INSTALLER=$SCRIPT_DIR/debian-stretch-9_6-mipsel.tar.gz
+INSTALLER=$SCRIPT_DIR/debian-stretch-9_7-mipsel.tar.gz
 
 # Compile libc and busybox from Entware first!
 [ -d $BUILD_DIR ] || exit 1
@@ -33,7 +33,7 @@ echo 'Adding Debian minimal...'
 sudo tar -xz -C $ROOT_DIR/opt -f debian-stretch-mipsel_clean.tgz
 
 # Set up Debian chroot
-sudo sed -i -e 's|Port 65022|Port 222|g' -e 's|#PermitRootLogin prohibit-password|PermitRootLogin yes|' \
+sudo sed -i -e 's|^#Port 22|Port 222|g' -e 's|^#PermitRootLogin .*|PermitRootLogin yes|' \
 	$ROOT_DIR/opt/debian/etc/ssh/sshd_config
 sudo touch $ROOT_DIR/opt/debian/chroot-services.list
 sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list

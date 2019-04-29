@@ -25,7 +25,7 @@ echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
-cp -r $SCRIPT_DIR/../Entware/build_dir/target-mips_mips32r2_glibc-*/linux-mips-3.4/iptables-*/ipkg-mips-3.4/iptables/opt $ROOT_DIR
+cp -r $BUILD_DIR/linux-mips-3.4/iptables-*/ipkg-mips-3.4/iptables/opt $ROOT_DIR
 
 echo 'Adding Debian minimal...'
 [ -f debian-jessie-mips_clean.tgz ] || wget http://ndm.zyxmon.org/binaries/debian/debian-jessie-mips_clean.tgz
@@ -51,6 +51,7 @@ sudo echo 'nameserver 8.8.8.8' > $ROOT_DIR/opt/debian/etc/resolv.conf
 echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc
 cp $SCRIPT_DIR/initrc $ROOT_DIR/opt/etc
+chmod +x $ROOT_DIR/opt/etc/initrc
 
 echo 'Adding ndmq utility...'
 sudo tar -xz -C $ROOT_DIR/opt/debian -f ndmq-mips.tgz

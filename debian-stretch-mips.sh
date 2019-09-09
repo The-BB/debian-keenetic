@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
 BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-mips_mips32r2_glibc-*
-INSTALLER=$SCRIPT_DIR/debian-stretch-9_10-mips.tar.gz
+INSTALLER=$SCRIPT_DIR/debian-stretch-9_11-mips.tar.gz
 
 # Compile libc and busybox from Entware first!
 [ -d $BUILD_DIR ] || exit 1

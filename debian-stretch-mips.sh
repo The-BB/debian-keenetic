@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
 BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-mips_mips32r2_glibc-*
-INSTALLER=$SCRIPT_DIR/debian-stretch-9_11-mips.tar.gz
+INSTALLER=$SCRIPT_DIR/debian-stretch-9_12-mips.tar.gz
 
 # Compile libc and busybox from Entware first!
 [ -d $BUILD_DIR ] || exit 1
@@ -56,7 +56,7 @@ deb http://ftp.debian.org/debian/ stretch main non-free contrib
 EOF
 
 sudo echo 'debian_mips' > $ROOT_DIR/opt/debian/etc/hostname
-sudo echo 'nameserver 8.8.8.8' > $ROOT_DIR/opt/debian/etc/resolv.conf
+sudo sed -i -e 's,^nameserver .*,nameserver 8.8.8.8,' $ROOT_DIR/opt/debian/etc/resolv.conf
 
 echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc

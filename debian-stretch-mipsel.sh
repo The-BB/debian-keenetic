@@ -34,7 +34,7 @@ echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-default/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
-cp -r $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-mipsel-3.4/iptables/opt $ROOT_DIR
+cp -r $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-mipsel-3.4_kn/iptables/opt $ROOT_DIR
 
 echo 'Adding Debian minimal...'
 [ -f debian-stretch-mipsel_clean.tgz ] || wget http://ndm.zyxmon.org/binaries/debian/debian-stretch-mipsel_clean.tgz

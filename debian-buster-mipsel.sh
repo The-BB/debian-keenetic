@@ -31,7 +31,7 @@ cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3.4/libgcc/opt $ROOT_DIR
 cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3.4/libpthread/opt $ROOT_DIR
 
 echo 'Adding busybox...'
-cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
+cp -r $BUILD_DIR/busybox-default/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
 cp -r $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-mipsel-3.4/iptables/opt $ROOT_DIR
@@ -42,7 +42,7 @@ echo 'Adding Debian minimal...'
 sudo tar -xz -C $ROOT_DIR/opt -f debian-buster-mipsel_clean.tgz
 
 # Set up Debian chroot
-sudo sed -i -e 's|^#Port 22|Port 222|g' -e 's|^#PermitRootLogin .*|PermitRootLogin yes|' \
+sudo sed -i -e 's|^#Port .*|Port 222|g' -e 's|^#PermitRootLogin .*|PermitRootLogin yes|' \
 	$ROOT_DIR/opt/debian/etc/ssh/sshd_config
 sudo touch $ROOT_DIR/opt/debian/chroot-services.list
 sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list

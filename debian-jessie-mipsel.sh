@@ -12,9 +12,18 @@ INSTALLER=$SCRIPT_DIR/debian-jessie-8_11-mipsel.tar.gz
 
 [ -d $ROOT_DIR ] && rm -fr $ROOT_DIR
 # Make hook scripts dirs, see https://github.com/ndmsystems/packages/wiki/Opkg-Component
-for dir in button fs netfilter schedule time usb user wan; do
-    mkdir -p $ROOT_DIR/opt/etc/ndm/${dir}.d
-done
+#for dir in button fs neighbour netfilter schedule time usb user wan \
+#	ifcreated ifdestroyed ifipchanged ifstatechanged \
+#	l2tp_ipsec_vpn_up l2tp_ipsec_vpn_down pptp_vpn_up pptp_vpn_down	\
+#	sstp_vpn_up sstp_vpn_down vip_vpn_up vip_vpn_down \
+#	openvpn-up openvpn-down openvpn-route-up openvpn-ipchange
+#	openvpn-client-connect openvpn-client-disconnect \
+#	openvpn-learn-address openvpn-tls-verify; do
+#    mkdir -p $ROOT_DIR/opt/etc/ndm/${dir}.d
+#done
+echo 'Adding hook scripts dirs'
+mkdir -p $ROOT_DIR/opt/etc
+cp -r $BUILD_DIR/opt-ndmsv2-*/ipkg-mipsel-3.4_kn/opt-ndmsv2/opt/etc/ndm $ROOT_DIR/opt/etc/
 
 echo 'Adding toolchain libraries...'
 cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3.4/libc/opt $ROOT_DIR
@@ -22,7 +31,7 @@ cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3.4/libgcc/opt $ROOT_DIR
 cp -r $BUILD_DIR/toolchain/ipkg-mipsel-3.4/libpthread/opt $ROOT_DIR
 
 echo 'Adding busybox...'
-cp -r $BUILD_DIR/busybox-*/ipkg-install/opt $ROOT_DIR
+cp -r $BUILD_DIR/busybox-default/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
 cp -r $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-mipsel-3.4/iptables/opt $ROOT_DIR
@@ -33,7 +42,8 @@ echo 'Adding Debian minimal...'
 sudo tar -xz -C $ROOT_DIR/opt -f debian-jessie-mipsel_clean.tgz
 
 # Set up Debian chroot
-sudo sed -i 's|Port 65022|Port 222|g' $ROOT_DIR/opt/debian/etc/ssh/sshd_config
+sudo sed -i -e 's|^#Port .*|Port 222|g' -e 's|^#PermitRootLogin .*|PermitRootLogin yes|' \
+	$ROOT_DIR/opt/debian/etc/ssh/sshd_config
 sudo touch $ROOT_DIR/opt/debian/chroot-services.list
 sudo chmod 666 $ROOT_DIR/opt/debian/chroot-services.list
 echo 'ssh' >> $ROOT_DIR/opt/debian/chroot-services.list
@@ -46,7 +56,7 @@ deb http://ftp.debian.org/debian/ jessie main non-free contrib
 EOF
 
 sudo echo 'debian_mipsel' > $ROOT_DIR/opt/debian/etc/hostname
-sudo echo 'nameserver 8.8.8.8' > $ROOT_DIR/opt/debian/etc/resolv.conf
+sudo sed -i -e 's,^nameserver .*,nameserver 8.8.8.8,' $ROOT_DIR/opt/debian/etc/resolv.conf
 
 echo 'Adding start script...'
 mkdir -p $ROOT_DIR/opt/etc

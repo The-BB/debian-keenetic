@@ -34,7 +34,7 @@ echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-default/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
-cp -r $BUILD_DIR/linux-mips-3.4/iptables-*/ipkg-mips-3.4/iptables/opt $ROOT_DIR
+cp -r $BUILD_DIR/linux-mips-3.4/iptables-*/ipkg-mips-3.4_kn/iptables/opt $ROOT_DIR
 
 echo 'Adding Debian minimal...'
 [ -f debian-stretch-mips_clean.tgz ] || wget http://ndm.zyxmon.org/binaries/debian/debian-stretch-mips_clean.tgz

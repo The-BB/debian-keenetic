@@ -63,9 +63,6 @@ mkdir -p $ROOT_DIR/opt/etc
 cp $SCRIPT_DIR/initrc $ROOT_DIR/opt/etc
 chmod +x $ROOT_DIR/opt/etc/initrc
 
-echo 'Adding ndmq utility...'
-sudo tar -xz -C $ROOT_DIR/opt/debian -f ndmq-mips_stretch.tgz
-
 echo 'Packing installer...'
 [ -f $INSTALLER ] && rm -f $INSTALLER
 

@@ -1,4 +1,5 @@
 #!/bin/sh
+
 PATH=/opt/bin:/opt/sbin:/sbin:/bin:/usr/sbin:/usr/bin
 
 # Debian folder

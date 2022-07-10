@@ -70,16 +70,17 @@ case "$1" in
 		stop
 	;;
 	restart)
-	stop
+		stop
 		sleep 5
 		start
 	;;
-	status) status
+	status)
+		status
 	;;
 	*)
 		echo "Usage: $0 (start|stop|restart|status)"
 		exit 1
-		;;
+	;;
 esac
 
 echo 'Done.'

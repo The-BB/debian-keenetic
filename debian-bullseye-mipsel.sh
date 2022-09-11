@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
 BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-mipsel_mips32r2_glibc-*
-INSTALLER=$SCRIPT_DIR/debian-bullseye-11.4-mipsel.tar.gz
+INSTALLER=$SCRIPT_DIR/debian-bullseye-11.5-mipsel.tar.gz
 
 # Compile libc and busybox from Entware first!
 [ -d $BUILD_DIR ] || exit 1

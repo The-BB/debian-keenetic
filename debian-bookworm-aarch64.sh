@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
 BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-aarch64_cortex-a53_glibc-*
-INSTALLER=$SCRIPT_DIR/debian-bookworm-12.0-aarch64.tar.gz
+INSTALLER=$SCRIPT_DIR/debian-bookworm-12.1-aarch64.tar.gz
 
 # Compile libc and busybox from Entware first!
 [ -d $BUILD_DIR ] || exit 1

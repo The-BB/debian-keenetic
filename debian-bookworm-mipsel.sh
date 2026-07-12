@@ -5,7 +5,7 @@ SCRIPT_DIR=$(dirname $0)
 
 ROOT_DIR=$SCRIPT_DIR/installer_root
 BUILD_DIR=$SCRIPT_DIR/../Entware/build_dir/target-mipsel_mips32r2_glibc-*
-INSTALLER=$SCRIPT_DIR/debian-bookworm-12.14-mipsel.tar.gz
+INSTALLER=$SCRIPT_DIR/debian-bookworm-12.15-mipsel.tar.gz
 
 # Compile libc and busybox from Entware first!
 [ -d $BUILD_DIR ] || exit 1
@@ -34,6 +34,8 @@ echo 'Adding busybox...'
 cp -r $BUILD_DIR/busybox-default/busybox-*/ipkg-install/opt $ROOT_DIR
 
 echo 'Adding iptables...'
+cp -a $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-install/opt/bin/ip* $ROOT_DIR/opt/bin
+cp -a $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-install/opt/sbin/ip* $ROOT_DIR/opt/sbin
 cp -r $BUILD_DIR/linux-mipsel-3.4/iptables-*/ipkg-mipsel-3.4_kn/iptables/opt $ROOT_DIR
 
 echo 'Adding Debian minimal...'
